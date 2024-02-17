@@ -4,7 +4,8 @@ import java.time.LocalDate;
 import java.util.Locale.Category;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.siyu.blogsitebackend.blog.Blog;
+import com.siyu.blogsitebackend.article.Article;
+import com.siyu.blogsitebackend.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,24 +31,27 @@ public class Comment {
     @Column(columnDefinition="TEXT")
     private String content;
 
-    @Column
-    private String nickname;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate commentDate;
 
     @ManyToOne
-    @JoinColumn(name = "blog_id")
-    private Blog blog;
+    @JoinColumn(name = "article_id")
+    private Article article;
+
+    private boolean blocked = false;
 
     public Comment() {
     }
     
-    public Comment(String nickname, String content,LocalDate commentDate,Blog blog) {
-        this.nickname = nickname;
+    public Comment(User user, String content,LocalDate commentDate,Article article) {
+        this.user = user;
         this.content = content;
         this.commentDate = commentDate;
-        this.blog = blog;
+        this.article = article;
     }
 
 }
