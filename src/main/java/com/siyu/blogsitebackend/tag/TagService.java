@@ -42,6 +42,9 @@ public class TagService {
     }
 
     public Optional<List<Article>> getAllArticlesByTagId(Long id) {
+        if(!this.tagRepository.existsById(id)){
+            return Optional.of(null);
+        }
         List<Article> articles = this.articleRepository.findAllByTags_id(id);
         return Optional.of(articles);
     }

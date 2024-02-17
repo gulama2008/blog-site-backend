@@ -86,6 +86,14 @@ public class ArticleController {
         throw new NotFoundException(String.format("Cannot add tag", id));
     }
     
-    
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<List<Tag>> getAllTagsByArticleId(@PathVariable Long id) {
+        Optional<List<Tag>> tags = this.articleService.getAllTagsByArticleId(id);
+        if (tags.isPresent()) {
+            List<Tag> foundTags = tags.get();
+            return new ResponseEntity<>(foundTags, HttpStatus.OK);
+        }
+        throw new NotFoundException(String.format("Cannot find any tags under article id %d",id));
+  }
 
 }

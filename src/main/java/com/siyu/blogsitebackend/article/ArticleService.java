@@ -24,6 +24,9 @@ public class ArticleService {
     private ArticleRepository articleRepository;
 
     @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
     private TagService tagService;
 
     public List<Article> getAll() {
@@ -76,7 +79,7 @@ public class ArticleService {
         return foundArticle;
     }
     
-    public boolean addTag(Long id,TagCreateDTO tagData) {
+    public boolean addTag(Long id, TagCreateDTO tagData) {
         Optional<Article> article = this.getById(id);
         if (article.isPresent()) {
             Article toUpdate = article.get();
@@ -89,11 +92,19 @@ public class ArticleService {
                     return true;
                 }
             } else {
-                Tag created=this.tagService.createTag(tagData);
+                Tag created = this.tagService.createTag(tagData);
                 toUpdate.addTag(created);
                 return true;
             }
         }
         return false;
+    }
+    
+    public Optional<List<Tag>> getAllTagsByArticleId(Long id) {
+        if(!this.articleRepository.existsById(id)){
+            return Optional.of(null);
+        }
+        List<Tag> tags = this.tagRepository.findAllByArticles_id(id);
+        return Optional.of(tags);
     }
 }

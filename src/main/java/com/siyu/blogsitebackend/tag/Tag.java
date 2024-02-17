@@ -1,7 +1,10 @@
 package com.siyu.blogsitebackend.tag;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.siyu.blogsitebackend.article.Article;
@@ -30,7 +33,7 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH })
     @JsonIgnore
-    private Set<Article> articles = new HashSet<>();;
+    private List<Article> articles = new ArrayList<>();;
 
     public Tag() {
     }
