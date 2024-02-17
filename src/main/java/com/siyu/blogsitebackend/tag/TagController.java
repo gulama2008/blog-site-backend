@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.siyu.blogsitebackend.article.Article;
 import com.siyu.blogsitebackend.exceptions.NotFoundException;
 
 import jakarta.validation.Valid;
@@ -45,4 +46,14 @@ public class TagController {
         Tag newTag = this.tagService.createTag(data);
         return new ResponseEntity<>(newTag, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}/articles")
+    public ResponseEntity<List<Article>> getAllArticlesByTagId(@PathVariable Long id) {
+        Optional<List<Article>> articles = this.tagService.getAllArticlesByTagId(id);
+        if (articles.isPresent()) {
+            List<Article> foundArticles = articles.get();
+            return new ResponseEntity<>(foundArticles, HttpStatus.OK);
+        }
+        throw new NotFoundException(String.format("Cannot find any articles"));
+  }
 }

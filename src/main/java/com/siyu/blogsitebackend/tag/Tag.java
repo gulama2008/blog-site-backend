@@ -3,16 +3,14 @@ package com.siyu.blogsitebackend.tag;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.siyu.blogsitebackend.article.Article;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -29,13 +27,22 @@ public class Tag {
 
     private String name;
 
-    @ManyToMany(mappedBy = "tags", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @ManyToMany(mappedBy = "tags", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+            CascadeType.REFRESH })
+    @JsonIgnore
     private Set<Article> articles = new HashSet<>();;
 
     public Tag() {
     }
 
     public Tag(String name) {
+        this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Tag [id=" + id + ", name=" + name;
+    }
+    
 
 }

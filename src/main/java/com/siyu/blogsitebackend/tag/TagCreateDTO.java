@@ -18,4 +18,9 @@ public class TagCreateDTO {
     public TagCreateDTO(String name) {
         this.name = name;
     }
+
+    public TagCreateDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

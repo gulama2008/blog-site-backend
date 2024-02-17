@@ -48,8 +48,12 @@ public class ArticleController {
     @PostMapping
     public ResponseEntity<Article> createArticle(@Valid @RequestBody ArticleCreateDTO data) {
         Optional<Article> newArticle = this.articleService.createArticle(data);
-        if(newArticle.isPresent()){
-            return new ResponseEntity<>(newArticle.get(), HttpStatus.CREATED);
+        if (newArticle.isPresent()) {
+            System.out.println("=============here in controller===========");
+            Article article = newArticle.get();
+            System.out.println(article);
+            return new ResponseEntity<>(article, HttpStatus.CREATED);
+            // return "created";
         }
         throw new NotFoundException(String.format("Cannot create new article with tags"));
     }
@@ -76,10 +80,12 @@ public class ArticleController {
     @PostMapping("/{id}/tags")
     public ResponseEntity<Tag> addTag(@PathVariable Long id, @RequestBody TagCreateDTO tagData) {
         boolean added = articleService.addTag(id, tagData);
-        if(added){
+        if (added) {
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
         throw new NotFoundException(String.format("Cannot add tag", id));
     }
+    
+    
 
 }

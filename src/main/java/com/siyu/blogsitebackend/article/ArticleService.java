@@ -38,20 +38,20 @@ public class ArticleService {
     public Optional<Article> createArticle(ArticleCreateDTO data) {
         String title = data.getTitle();
         String content = data.getContent();
-        LocalDate publishDate = data.getPublishDate();
+        LocalDate publishDate = LocalDate.parse(data.getPublishDate());
         Article newArticle = new Article(title, content, publishDate);
         List<Tag> tags = data.getTags();
         Article created = this.articleRepository.save(newArticle);
+        System.out.println(tags);
         if (tags != null) {
-            for (int i=0;i<tags.size();i++) {
-                TagCreateDTO newTagCreateDTO = new TagCreateDTO(tags.get(i).getName());
+            for (int i = 0; i < tags.size(); i++) {
+                TagCreateDTO newTagCreateDTO = new TagCreateDTO(tags.get(i).getId(), tags.get(i).getName());
                 boolean added = this.addTag(created.getId(), newTagCreateDTO);
                 if (!added) {
                     return Optional.of(null);
                 }
             }
         }
-        
         return Optional.of(created);
     }
 

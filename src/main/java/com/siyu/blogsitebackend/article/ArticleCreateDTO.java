@@ -23,7 +23,7 @@ public class ArticleCreateDTO {
     private String content;
 
      @NotBlank
-     private LocalDate publishDate;
+     private String publishDate;
     
      private ArrayList<Tag> tags;
    
