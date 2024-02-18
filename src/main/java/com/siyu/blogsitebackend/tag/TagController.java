@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,5 +56,14 @@ public class TagController {
             return new ResponseEntity<>(foundArticles, HttpStatus.OK);
         }
         throw new NotFoundException(String.format("Cannot find any articles"));
-  }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Tag> deleteById(@PathVariable Long id) {
+        boolean deleted = this.tagService.deleteById(id);
+        if (deleted) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        throw new NotFoundException(String.format("Tag with id %d does not exist, could not delete", id));
+    }
 }

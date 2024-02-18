@@ -33,7 +33,7 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH })
     @JsonIgnore
-    private List<Article> articles = new ArrayList<>();;
+    private Set<Article> articles = new HashSet<>();;
 
     public Tag() {
     }

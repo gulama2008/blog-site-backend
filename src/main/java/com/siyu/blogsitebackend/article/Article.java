@@ -45,10 +45,10 @@ public class Article {
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinTable(name = "ARTICLE_TAG_MAPPING", joinColumns = @JoinColumn(name = "article_id"), 
         	inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags=new ArrayList<>();
+    private Set<Tag> tags=new HashSet<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
+    private List<Comment> comments = new ArrayList<>();
 
     private int views=0;
 

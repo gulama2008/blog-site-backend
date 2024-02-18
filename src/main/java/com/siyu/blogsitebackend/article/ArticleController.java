@@ -47,21 +47,14 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<Article> createArticle(@Valid @RequestBody ArticleCreateDTO data) {
-        Optional<Article> newArticle = this.articleService.createArticle(data);
-        if (newArticle.isPresent()) {
-            System.out.println("=============here in controller===========");
-            Article article = newArticle.get();
-            System.out.println(article);
-            return new ResponseEntity<>(article, HttpStatus.CREATED);
-            // return "created";
-        }
-        throw new NotFoundException(String.format("Cannot create new article with tags"));
+        Article newArticle = this.articleService.createArticle(data);
+        return new ResponseEntity<>(newArticle, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Article> deleteById(@PathVariable Long id) {
         boolean deleted = this.articleService.deleteById(id);
-        if (deleted == true) {
+        if (deleted) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         throw new NotFoundException(String.format("Article with id %d does not exist, could not delete", id));
@@ -93,7 +86,7 @@ public class ArticleController {
             List<Tag> foundTags = tags.get();
             return new ResponseEntity<>(foundTags, HttpStatus.OK);
         }
-        throw new NotFoundException(String.format("Cannot find any tags under article id %d",id));
-  }
+        throw new NotFoundException(String.format("Cannot find any tags under article id %d", id));
+    }
 
 }

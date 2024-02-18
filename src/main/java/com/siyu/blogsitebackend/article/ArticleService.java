@@ -38,7 +38,7 @@ public class ArticleService {
 		return foundArticle;
 	}
 
-    public Optional<Article> createArticle(ArticleCreateDTO data) {
+    public Article createArticle(ArticleCreateDTO data) {
         String title = data.getTitle();
         String content = data.getContent();
         LocalDate publishDate = LocalDate.parse(data.getPublishDate());
@@ -47,15 +47,12 @@ public class ArticleService {
         Article created = this.articleRepository.save(newArticle);
         System.out.println(tags);
         if (tags != null) {
-            for (int i = 0; i < tags.size(); i++) {
-                TagCreateDTO newTagCreateDTO = new TagCreateDTO(tags.get(i).getId(), tags.get(i).getName());
-                boolean added = this.addTag(created.getId(), newTagCreateDTO);
-                if (!added) {
-                    return Optional.of(null);
-                }
+            for (Tag tag : tags) {
+                TagCreateDTO newTagCreateDTO = new TagCreateDTO(tag.getId(), tag.getName());
+                this.addTag(created.getId(), newTagCreateDTO);
             }
         }
-        return Optional.of(created);
+        return created;
     }
 
     public boolean deleteById(Long id) {

@@ -1,10 +1,6 @@
 package com.siyu.blogsitebackend.tag;
 
 import java.util.List;
-import java.util.Locale.Category;
-
-import javax.swing.text.html.Option;
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +38,19 @@ public class TagService {
     }
 
     public Optional<List<Article>> getAllArticlesByTagId(Long id) {
-        if(!this.tagRepository.existsById(id)){
+        if (!this.tagRepository.existsById(id)) {
             return Optional.of(null);
         }
         List<Article> articles = this.articleRepository.findAllByTags_id(id);
         return Optional.of(articles);
+    }
+    
+    public boolean deleteById(Long id) {
+        if (!this.tagRepository.existsById(id)) {
+            return false;
+        }
+        this.tagRepository.deleteById(id);
+        return true;
     }
 
 }
