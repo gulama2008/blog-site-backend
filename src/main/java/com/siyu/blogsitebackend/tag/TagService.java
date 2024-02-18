@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.siyu.blogsitebackend.article.Article;
 import com.siyu.blogsitebackend.article.ArticleRepository;
@@ -48,6 +52,10 @@ public class TagService {
     public boolean deleteById(Long id) {
         if (!this.tagRepository.existsById(id)) {
             return false;
+        }
+        List<Article> articles = this.articleRepository.findAllByTags_id(id);
+        for (Article article : articles) {
+            article.removeTag(id);
         }
         this.tagRepository.deleteById(id);
         return true;

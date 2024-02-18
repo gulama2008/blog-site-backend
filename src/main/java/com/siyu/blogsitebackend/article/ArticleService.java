@@ -104,4 +104,15 @@ public class ArticleService {
         List<Tag> tags = this.tagRepository.findAllByArticles_id(id);
         return Optional.of(tags);
     }
+
+    public boolean deleteTagFromArticle(Long articleId, Long tagId) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        if (article.isPresent()) {
+            Article found = article.get();
+            found.removeTag(tagId);
+            articleRepository.save(found);
+            return true;
+        }
+        return false;
+    }
 }

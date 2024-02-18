@@ -47,5 +47,16 @@ public class Tag {
         return "Tag [id=" + id + ", name=" + name;
     }
     
-
+    public void addArticle(Article article) {
+        this.articles.add(article);
+        article.getTags().add(this);
+    }
+  
+    public void removeArticle(long articleId) {
+      Article article = this.articles.stream().filter(t -> t.getId() == articleId).findFirst().orElse(null);
+      if (article != null) {
+        this.articles.remove(article);
+        article.getTags().remove(this);
+      }
+    }
 }

@@ -66,17 +66,17 @@ public class Article {
         tag.getArticles().add(this);
     }
   
-  @Override
+    public void removeTag(long tagId) {
+      Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
+      if (tag != null) {
+        this.tags.remove(tag);
+        tag.getArticles().remove(this);
+      }
+    }
+  
+    @Override
     public String toString() {
       return "Article [id=" + id + ", title=" + title + ", content=" + content + ", publishDate=" + publishDate
           + ", tags=" + tags + ", comments=" + comments + ", views=" + views + "]";
     }
-
-  public void removeTag(long tagId) {
-    Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
-    if (tag != null) {
-      this.tags.remove(tag);
-      tag.getArticles().remove(this);
-    }
-  }
 }

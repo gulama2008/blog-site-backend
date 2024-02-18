@@ -89,4 +89,14 @@ public class ArticleController {
         throw new NotFoundException(String.format("Cannot find any tags under article id %d", id));
     }
 
+    @DeleteMapping("/{articleId}/tags/{tagId}")
+    public ResponseEntity<Article> deleteTagFromArticle(@PathVariable(value = "articleId") Long articleId, @PathVariable(value = "tagId") Long tagId) {
+        boolean deleted = articleService.deleteTagFromArticle(articleId, tagId);
+
+        if (deleted) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        throw new NotFoundException(String.format("Article with id %d does not exist, could not delete", articleId));
+    }
+
 }
