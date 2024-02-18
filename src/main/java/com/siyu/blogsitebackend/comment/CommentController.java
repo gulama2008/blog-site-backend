@@ -47,7 +47,10 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentCreateDTO data) {
         Comment newComment = this.commentService.createComment(data);
-        return new ResponseEntity<>(newComment, HttpStatus.CREATED);
+        if(newComment!=null){
+            return new ResponseEntity<>(newComment, HttpStatus.CREATED);
+        }
+        throw new NotFoundException(String.format("Article does not exist"));
     }
 
     @DeleteMapping("/{id}")
@@ -62,11 +65,22 @@ public class CommentController {
     @PutMapping("/{id}")
 	public ResponseEntity<Comment> updateById(@PathVariable Long id, 
             @Valid @RequestBody CommentUpdateDTO data) {
-		Optional<Comment> updated = this.commentService.updateById(id, data);
+        Optional<Comment> updated = this.commentService.updateById(id, data);
         if (updated.isPresent()) {
-			return new ResponseEntity<Comment>(updated.get(), HttpStatus.OK);
-		}
+            return new ResponseEntity<Comment>(updated.get(), HttpStatus.OK);
+        }
         throw new NotFoundException(String.format("Comment with id %d does not exist, could not update", id));
+    }
+    
+    //find article by comment id
+    @GetMapping("/{id}/article")
+	public ResponseEntity<Article> getArticleByCommentId(@PathVariable Long id) {
+		Optional<Article> found = this.commentService.getArticleByCommentId(id);
+        if (found.isPresent()) {
+            return new ResponseEntity<Article>(found.get(), HttpStatus.OK);
+        }
+        System.out.println("testtest=========");
+		throw new NotFoundException(String.format("Cound not find article with comment id %d", id));
 	}
     
 }

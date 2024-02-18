@@ -2,15 +2,12 @@ package com.siyu.blogsitebackend.article;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.siyu.blogsitebackend.tag.Tag;
-import com.siyu.blogsitebackend.tag.TagAddDTO;
 import com.siyu.blogsitebackend.tag.TagCreateDTO;
 import com.siyu.blogsitebackend.tag.TagRepository;
 import com.siyu.blogsitebackend.tag.TagService;
@@ -99,7 +96,7 @@ public class ArticleService {
     
     public Optional<List<Tag>> getAllTagsByArticleId(Long id) {
         if(!this.articleRepository.existsById(id)){
-            return Optional.of(null);
+            return Optional.ofNullable(null);
         }
         List<Tag> tags = this.tagRepository.findAllByArticles_id(id);
         return Optional.of(tags);

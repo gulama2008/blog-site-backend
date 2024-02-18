@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.siyu.blogsitebackend.article.Article;
+import com.siyu.blogsitebackend.article.ArticleRepository;
 import com.siyu.blogsitebackend.article.ArticleService;
 import com.siyu.blogsitebackend.user.User;
 import com.siyu.blogsitebackend.user.UserService;
@@ -25,6 +26,9 @@ public class CommentService {
     private ArticleService articleService;
 
     @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
     private UserService userService;
 
     public List<Comment> getAll() {
@@ -38,12 +42,13 @@ public class CommentService {
 
     public Comment createComment(CommentCreateDTO data) {
         String content = data.getContent();
-        LocalDate commentDate = data.getCommentDate();
+        LocalDate commentDate = LocalDate.parse(data.getCommentDate());
         Optional<Article> article = this.articleService.getById(data.getArticleId());
         Optional<User> user = this.userService.getById(data.getUserId());
         if (article.isPresent()) {
             Comment newComment = new Comment(user.get(), content, commentDate, article.get());
             Comment created = this.commentRepository.save(newComment);
+            article.get().getComments().add(newComment);
             return created;
         }
         return null;
@@ -67,5 +72,15 @@ public class CommentService {
             return Optional.of(updatedComment);
         }
         return foundComment;
+    }
+
+    public Optional<Article> getArticleByCommentId(Long id) {
+        if(this.commentRepository.existsById(id)){
+            Article article = this.articleRepository.findByComments_id(id);
+            if (article != null) {
+                return Optional.of(article);
+            }
+        }
+        return Optional.ofNullable(null);
     }
 }

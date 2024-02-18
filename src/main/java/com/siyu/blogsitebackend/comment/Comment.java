@@ -1,9 +1,9 @@
 package com.siyu.blogsitebackend.comment;
 
 import java.time.LocalDate;
-import java.util.Locale.Category;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.siyu.blogsitebackend.article.Article;
 import com.siyu.blogsitebackend.user.User;
 
@@ -33,6 +33,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -40,6 +41,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "article_id")
+    @JsonIgnore
     private Article article;
 
     private boolean blocked = false;

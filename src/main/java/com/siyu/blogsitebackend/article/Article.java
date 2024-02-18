@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.siyu.blogsitebackend.comment.Comment;
 import com.siyu.blogsitebackend.tag.Tag;
 
@@ -74,9 +75,5 @@ public class Article {
       }
     }
   
-    @Override
-    public String toString() {
-      return "Article [id=" + id + ", title=" + title + ", content=" + content + ", publishDate=" + publishDate
-          + ", tags=" + tags + ", comments=" + comments + ", views=" + views + "]";
-    }
+    
 }
