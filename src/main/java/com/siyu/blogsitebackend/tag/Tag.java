@@ -32,7 +32,6 @@ public class Tag {
 
     @ManyToMany(mappedBy = "tags", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH })
-    @JsonIgnore
     private Set<Article> articles = new HashSet<>();;
 
     public Tag() {
@@ -44,7 +43,7 @@ public class Tag {
 
     @Override
     public String toString() {
-        return "Tag [id=" + id + ", name=" + name;
+        return "Tag id=" + id + ", name=" + name;
     }
     
     public void addArticle(Article article) {
@@ -52,7 +51,7 @@ public class Tag {
         article.getTags().add(this);
     }
   
-    public void removeArticle(long articleId) {
+    public void removeArticle(Long articleId) {
       Article article = this.articles.stream().filter(t -> t.getId() == articleId).findFirst().orElse(null);
       if (article != null) {
         this.articles.remove(article);

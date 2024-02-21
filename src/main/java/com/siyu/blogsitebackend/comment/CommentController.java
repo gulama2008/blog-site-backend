@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +20,7 @@ import com.siyu.blogsitebackend.article.Article;
 import com.siyu.blogsitebackend.article.ArticleCreateDTO;
 import com.siyu.blogsitebackend.article.ArticleUpdateDTO;
 import com.siyu.blogsitebackend.exceptions.NotFoundException;
+import com.siyu.blogsitebackend.user.User;
 
 import jakarta.validation.Valid;
 
@@ -62,7 +64,7 @@ public class CommentController {
         throw new NotFoundException(String.format("Comment with id %d does not exist, could not delete", id));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
 	public ResponseEntity<Comment> updateById(@PathVariable Long id, 
             @Valid @RequestBody CommentUpdateDTO data) {
         Optional<Comment> updated = this.commentService.updateById(id, data);
@@ -74,13 +76,22 @@ public class CommentController {
     
     //find article by comment id
     @GetMapping("/{id}/article")
-	public ResponseEntity<Article> getArticleByCommentId(@PathVariable Long id) {
-		Optional<Article> found = this.commentService.getArticleByCommentId(id);
+    public ResponseEntity<Article> getArticleByCommentId(@PathVariable Long id) {
+        Optional<Article> found = this.commentService.getArticleByCommentId(id);
         if (found.isPresent()) {
             return new ResponseEntity<Article>(found.get(), HttpStatus.OK);
         }
-        System.out.println("testtest=========");
-		throw new NotFoundException(String.format("Cound not find article with comment id %d", id));
+        throw new NotFoundException(String.format("Cound not find article with comment id %d", id));
+    }
+    
+    //find user by comment id
+    @GetMapping("/{id}/user")
+	public ResponseEntity<User> getUserByCommentId(@PathVariable Long id) {
+		Optional<User> found = this.commentService.getUserByCommentId(id);
+        if (found.isPresent()) {
+            return new ResponseEntity<User>(found.get(), HttpStatus.OK);
+        }
+		throw new NotFoundException(String.format("Cound not find user with comment id %d", id));
 	}
     
 }

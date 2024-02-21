@@ -58,6 +58,17 @@ public class TagController {
         throw new NotFoundException(String.format("Cannot find any articles"));
     }
 
+    //
+    // @GetMapping("/articles")
+    // public ResponseEntity<List<Article>> getAllArticlesByTagId(@PathVariable Long id) {
+    //     Optional<List<Article>> articles = this.tagService.getAllArticlesByTagId(id);
+    //     if (articles.isPresent()) {
+    //         List<Article> foundArticles = articles.get();
+    //         return new ResponseEntity<>(foundArticles, HttpStatus.OK);
+    //     }
+    //     throw new NotFoundException(String.format("Cannot find any articles"));
+    // }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Tag> deleteById(@PathVariable Long id) {
         boolean deleted = this.tagService.deleteById(id);

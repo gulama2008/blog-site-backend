@@ -1,8 +1,10 @@
 package com.siyu.blogsitebackend.article;
 
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import com.siyu.blogsitebackend.tag.TagRepository;
 import com.siyu.blogsitebackend.tag.TagService;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @Service
 @Transactional
@@ -121,5 +124,26 @@ public class ArticleService {
     public Article updateViews(Article article) {
         article.setViews(article.getViews() + 1);
         return this.articleRepository.save(article);
+    }
+
+    public Optional<Article> updateTagsByArticleId(Long id,ArticleUpdateTagDTO data) {
+        Optional<Article> foundArticle = this.getById(id);
+        if (foundArticle.isPresent()) {
+            Article toUpdate = foundArticle.get();
+            Set<Tag> existingTags = toUpdate.getTags();
+            Iterator<Tag> it = existingTags.iterator();
+            while (it.hasNext()) {
+                Tag currentTag = it.next();
+                currentTag.getArticles().remove(toUpdate);
+            }
+            existingTags.clear();
+            List<Tag> tags = data.getTags();
+            for (Tag tag : tags) {
+                toUpdate.addTag(tag);
+            }
+            Article updatedArticle = this.articleRepository.save(toUpdate);
+            return Optional.of(updatedArticle);
+        }
+        return foundArticle;
     }
 }

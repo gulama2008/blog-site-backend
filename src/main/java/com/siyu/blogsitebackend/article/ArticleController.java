@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -60,14 +61,14 @@ public class ArticleController {
         throw new NotFoundException(String.format("Article with id %d does not exist, could not delete", id));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
 	public ResponseEntity<Article> updateById(@PathVariable Long id, 
             @Valid @RequestBody ArticleUpdateDTO data) {
         Optional<Article> updated = this.articleService.updateById(id, data);
         if (updated.isPresent()) {
             return new ResponseEntity<Article>(updated.get(), HttpStatus.OK);
         }
-        throw new NotFoundException(String.format("Category with id %d does not exist, could not update", id));
+        throw new NotFoundException(String.format("Article with id %d does not exist, could not update", id));
     }
     
     @PostMapping("/{id}/tags")
@@ -79,6 +80,7 @@ public class ArticleController {
         throw new NotFoundException(String.format("Cannot add tag", id));
     }
     
+    //find tags by article id
     @GetMapping("/{id}/tags")
     public ResponseEntity<List<Tag>> getAllTagsByArticleId(@PathVariable Long id) {
         Optional<List<Tag>> tags = this.articleService.getAllTagsByArticleId(id);
@@ -89,8 +91,20 @@ public class ArticleController {
         throw new NotFoundException(String.format("Cannot find any tags under article id %d", id));
     }
 
+    //update tags for article with particular id
+    @PatchMapping("/{id}/tags")
+    public ResponseEntity<Article> updateTagsByArticleId(@PathVariable Long id, 
+            @Valid @RequestBody ArticleUpdateTagDTO data) {
+        Optional<Article> updated = this.articleService.updateTagsByArticleId(id, data);
+        if (updated.isPresent()) {
+            return new ResponseEntity<Article>(updated.get(), HttpStatus.OK);
+        }
+        throw new NotFoundException(String.format("Article with id %d does not exist, could not update", id));
+    }
+
     @DeleteMapping("/{articleId}/tags/{tagId}")
-    public ResponseEntity<Article> deleteTagFromArticle(@PathVariable(value = "articleId") Long articleId, @PathVariable(value = "tagId") Long tagId) {
+    public ResponseEntity<Article> deleteTagFromArticle(@PathVariable(value = "articleId") Long articleId,
+            @PathVariable(value = "tagId") Long tagId) {
         boolean deleted = articleService.deleteTagFromArticle(articleId, tagId);
 
         if (deleted) {
@@ -98,5 +112,6 @@ public class ArticleController {
         }
         throw new NotFoundException(String.format("Article with id %d does not exist, could not delete", articleId));
     }
+    
 
 }

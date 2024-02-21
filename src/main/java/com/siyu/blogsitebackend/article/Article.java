@@ -45,7 +45,8 @@ public class Article {
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinTable(name = "ARTICLE_TAG_MAPPING", joinColumns = @JoinColumn(name = "article_id"), 
-        	inverseJoinColumns = @JoinColumn(name = "tag_id"))
+        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JsonIgnore
     private Set<Tag> tags=new HashSet<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)

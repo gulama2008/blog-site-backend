@@ -11,6 +11,7 @@ import com.siyu.blogsitebackend.article.Article;
 import com.siyu.blogsitebackend.article.ArticleRepository;
 import com.siyu.blogsitebackend.article.ArticleService;
 import com.siyu.blogsitebackend.user.User;
+import com.siyu.blogsitebackend.user.UserRepository;
 import com.siyu.blogsitebackend.user.UserService;
 
 import jakarta.transaction.Transactional;
@@ -30,6 +31,9 @@ public class CommentService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Comment> getAll() {
         return this.commentRepository.findAll();
@@ -57,21 +61,30 @@ public class CommentService {
     public boolean deleteById(Long id) {
         Optional<Comment> foundComment = this.commentRepository.findById(id);
         if (foundComment.isPresent()) {
-            this.commentRepository.delete(foundComment.get());
-            return true;
+            Optional<Article> foundArticle = this.getArticleByCommentId(id);
+            if (foundArticle.isPresent()) {
+                foundArticle.get().getComments().remove(foundComment.get());
+                this.commentRepository.delete(foundComment.get());
+                return true;
+            } 
         }
         return false;
     }
     
     public Optional<Comment> updateById(Long id, CommentUpdateDTO data) {
         Optional<Comment> foundComment = this.getById(id);
-        if(foundComment.isPresent()) {
+        if (foundComment.isPresent()) {
             Comment toUpdate = foundComment.get();
-            toUpdate.setContent(data.getContent());
+            if (data.getBlocked() != null) {
+                toUpdate.setBlocked(data.getBlocked());
+            }
+            if (data.getContent()!=null) {
+                toUpdate.setContent(data.getContent());
+            }
             Comment updatedComment = this.commentRepository.save(toUpdate);
             return Optional.of(updatedComment);
         }
-        return foundComment;
+        return Optional.ofNullable(null);
     }
 
     public Optional<Article> getArticleByCommentId(Long id) {
@@ -79,6 +92,16 @@ public class CommentService {
             Article article = this.articleRepository.findByComments_id(id);
             if (article != null) {
                 return Optional.of(article);
+            }
+        }
+        return Optional.ofNullable(null);
+    }
+
+    public Optional<User> getUserByCommentId(Long id) {
+        if(this.commentRepository.existsById(id)){
+            User user = this.userRepository.findByComments_id(id);
+            if (user != null) {
+                return Optional.of(user);
             }
         }
         return Optional.ofNullable(null);
