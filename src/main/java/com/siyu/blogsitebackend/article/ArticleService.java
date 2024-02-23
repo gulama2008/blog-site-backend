@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.siyu.blogsitebackend.tag.Tag;
@@ -30,7 +31,7 @@ public class ArticleService {
     private TagService tagService;
 
     public List<Article> getAll() {
-        return this.articleRepository.findAll();
+        return this.articleRepository.findAll(Sort.by(Sort.Direction.DESC,"publishDate"));
     }
 
     public Optional<Article> getById(Long id) {
@@ -145,5 +146,9 @@ public class ArticleService {
             return Optional.of(updatedArticle);
         }
         return foundArticle;
+    }
+
+    public List<Article> getArticlesGroupByDate() {
+        return this.articleRepository.getArticlesByMonthAndYear();
     }
 }

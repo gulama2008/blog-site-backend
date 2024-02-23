@@ -113,5 +113,9 @@ public class ArticleController {
         throw new NotFoundException(String.format("Article with id %d does not exist, could not delete", articleId));
     }
     
-
+@GetMapping("/date")
+    public ResponseEntity<List<Article>> getArticlesGroupByDate() {
+        List<Article> allArticles = this.articleService.getArticlesGroupByDate();
+        return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
+    }
 }
