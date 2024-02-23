@@ -151,4 +151,10 @@ public class ArticleService {
     public List<Article> getArticlesGroupByDate() {
         return this.articleRepository.getArticlesByMonthAndYear();
     }
+
+    public List<Article> getAllArticlesByDateRange(String startDate,String endDate) {
+        LocalDate newStartDate = LocalDate.parse(startDate);
+        LocalDate newEndDate = LocalDate.parse(endDate);
+        return this.articleRepository.findAllByPublishDateBetween(newStartDate, newEndDate);
+    }
 }

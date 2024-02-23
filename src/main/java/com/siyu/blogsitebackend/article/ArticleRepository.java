@@ -1,9 +1,11 @@
 package com.siyu.blogsitebackend.article;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.siyu.blogsitebackend.tag.Tag;
+
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -21,5 +23,7 @@ public interface ArticleRepository extends JpaRepository<Article,Long>{
         "group by month " +
         "order by month desc", nativeQuery = true)
     List getArticlesByMonthAndYear();
+
+    List<Article> findAllByPublishDateBetween(LocalDate startDate, LocalDate endDate);
 
 }

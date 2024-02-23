@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.siyu.blogsitebackend.exceptions.NotFoundException;
@@ -113,9 +114,15 @@ public class ArticleController {
         throw new NotFoundException(String.format("Article with id %d does not exist, could not delete", articleId));
     }
     
+@GetMapping("/group")
+public ResponseEntity<List<Article>> getArticlesGroupByDate() {
+    List<Article> allArticles = this.articleService.getArticlesGroupByDate();
+    return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
+}
+    
 @GetMapping("/date")
-    public ResponseEntity<List<Article>> getArticlesGroupByDate() {
-        List<Article> allArticles = this.articleService.getArticlesGroupByDate();
+    public ResponseEntity<List<Article>> getAllArticlesByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+        List<Article> allArticles = this.articleService.getAllArticlesByDateRange(startDate,endDate);
         return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
     }
 }
