@@ -26,4 +26,6 @@ public interface ArticleRepository extends JpaRepository<Article,Long>{
 
     List<Article> findAllByPublishDateBetween(LocalDate startDate, LocalDate endDate);
 
+    List<Article> findByContentContains(String str);
+
 }

@@ -121,8 +121,15 @@ public ResponseEntity<List<Article>> getArticlesGroupByDate() {
 }
     
 @GetMapping("/date")
-    public ResponseEntity<List<Article>> getAllArticlesByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
-        List<Article> allArticles = this.articleService.getAllArticlesByDateRange(startDate,endDate);
+public ResponseEntity<List<Article>> getAllArticlesByDateRange(@RequestParam String startDate,
+        @RequestParam String endDate) {
+    List<Article> allArticles = this.articleService.getAllArticlesByDateRange(startDate, endDate);
+    return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
+}
+    
+@GetMapping("/search")
+    public ResponseEntity<List<Article>> getAllArticlesByKeyword(@RequestParam String keyword) {
+        List<Article> allArticles = this.articleService.getAllArticlesByKeyword(keyword);
         return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
     }
 }

@@ -157,4 +157,8 @@ public class ArticleService {
         LocalDate newEndDate = LocalDate.parse(endDate);
         return this.articleRepository.findAllByPublishDateBetween(newStartDate, newEndDate);
     }
+
+    public List<Article> getAllArticlesByKeyword(String keyword) {
+        return this.articleRepository.findByContentContains(keyword);
+    }
 }
