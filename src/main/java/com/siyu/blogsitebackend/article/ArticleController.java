@@ -114,22 +114,31 @@ public class ArticleController {
         throw new NotFoundException(String.format("Article with id %d does not exist, could not delete", articleId));
     }
     
-@GetMapping("/group")
-public ResponseEntity<List<Article>> getArticlesGroupByDate() {
-    List<Article> allArticles = this.articleService.getArticlesGroupByDate();
-    return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
-}
-    
-@GetMapping("/date")
-public ResponseEntity<List<Article>> getAllArticlesByDateRange(@RequestParam String startDate,
-        @RequestParam String endDate) {
-    List<Article> allArticles = this.articleService.getAllArticlesByDateRange(startDate, endDate);
-    return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
-}
-    
-@GetMapping("/search")
+    @GetMapping("/group")
+    public ResponseEntity<List<Article>> getArticlesGroupByDate() {
+        List<Article> allArticles = this.articleService.getArticlesGroupByDate();
+        return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
+    }
+        
+    @GetMapping("/date")
+    public ResponseEntity<List<Article>> getAllArticlesByDateRange(@RequestParam String startDate,
+            @RequestParam String endDate) {
+        List<Article> allArticles = this.articleService.getAllArticlesByDateRange(startDate, endDate);
+        return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
+    }
+        
+    @GetMapping("/search")
     public ResponseEntity<List<Article>> getAllArticlesByKeyword(@RequestParam String keyword) {
         List<Article> allArticles = this.articleService.getAllArticlesByKeyword(keyword);
         return new ResponseEntity<List<Article>>(allArticles, HttpStatus.OK);
+    }
+    
+    @PatchMapping("/{id}/views")
+	public ResponseEntity<Article> updateViewsByArticleId(@PathVariable Long id) {
+        Optional<Article> updated = this.articleService.updateViewsByArticleId(id);
+        if (updated.isPresent()) {
+            return new ResponseEntity<Article>(updated.get(), HttpStatus.OK);
+        }
+        throw new NotFoundException(String.format("Article with id %d does not exist, could not update", id));
     }
 }

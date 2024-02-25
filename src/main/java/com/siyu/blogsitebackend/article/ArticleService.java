@@ -38,8 +38,8 @@ public class ArticleService {
         Optional<Article> foundArticle = articleRepository.findById(id);
         if(foundArticle.isPresent()){
             Article article = foundArticle.get();
-            Article updatedViewsArticle=this.updateViews(article);
-            return Optional.of(updatedViewsArticle);
+            // Article updatedViewsArticle=this.updateViews(article);
+            return Optional.of(article);
         }
 		return Optional.ofNullable(null);
 	}
@@ -160,5 +160,16 @@ public class ArticleService {
 
     public List<Article> getAllArticlesByKeyword(String keyword) {
         return this.articleRepository.findByContentContains(keyword);
+    }
+
+    public Optional<Article> updateViewsByArticleId(Long id) {
+         Optional<Article> foundArticle = this.getById(id);
+        if (foundArticle.isPresent()) {
+            Article toUpdate = foundArticle.get();
+            toUpdate.setViews(toUpdate.getViews()+1);
+            Article updatedArticle = this.articleRepository.save(toUpdate);
+            return Optional.of(updatedArticle);
+        }
+        return foundArticle;
     }
 }
