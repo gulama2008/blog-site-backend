@@ -33,7 +33,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
+    // @JsonIgnore
     private User user;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -49,11 +49,20 @@ public class Comment {
     public Comment() {
     }
     
-    public Comment(User user, String content,LocalDate commentDate,Article article) {
+    public Comment(User user, String content, LocalDate commentDate, Article article) {
         this.user = user;
         this.content = content;
         this.commentDate = commentDate;
         this.article = article;
     }
+    
+    public Comment(Long id, User user, String content, LocalDate commentDate, Article article) {
+        this.id = id;
+        this.user = user;
+        this.content = content;
+        this.commentDate = commentDate;
+        this.article = article;
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.siyu.blogsitebackend.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.siyu.blogsitebackend.comment.Comment;
 
 import jakarta.persistence.CascadeType;
@@ -28,12 +29,19 @@ public class User {
      private String password;
 
      @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
      public User() {
      }
 
-     public User(String username,String password) {
+     public User(String username, String password) {
+         this.username = username;
+         this.password = password;
+     }
+     
+     public User(Long id, String username, String password) {
+        this.id=id;
          this.username = username;
          this.password = password;
      }

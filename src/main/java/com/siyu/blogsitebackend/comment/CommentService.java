@@ -3,6 +3,7 @@ package com.siyu.blogsitebackend.comment;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,16 @@ public class CommentService {
     private UserRepository userRepository;
 
     public List<Comment> getAll() {
-        return this.commentRepository.findAll();
+        List<Comment> comments = this.commentRepository.findAll();
+        return comments.stream().map(
+                comment -> {
+                    Comment copy=new Comment(comment.getId(), comment.getUser(), comment.getContent(), comment.getCommentDate(),
+                            comment.getArticle());
+                    copy.setUser(new User(comment.getUser().getId(),comment.getUser().getUsername(), null));
+                    return copy;
+            }
+        ).collect(Collectors.toList());
+
     }
 
     public Optional<Comment> getById(Long id) {
