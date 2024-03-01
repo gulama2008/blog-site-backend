@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.siyu.blogsitebackend.auth.RegisterDTO;
 import com.siyu.blogsitebackend.exceptions.NotFoundException;
 
 import jakarta.validation.Valid;
@@ -31,17 +32,17 @@ public class UserController {
         return new ResponseEntity<List<User>>(allUsers, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
-        Optional<User> found = this.userService.getById(id);
-        if (found.isPresent()) {
-            return new ResponseEntity<User>(found.get(), HttpStatus.OK);
-        }
-        throw new NotFoundException(String.format("User with id: %d does not exist", id));
-    }
+    // @GetMapping("/{id}")
+    // public ResponseEntity<User> getById(@PathVariable Long id) {
+    //     Optional<User> found = this.userService.getById(id);
+    //     if (found.isPresent()) {
+    //         return new ResponseEntity<User>(found.get(), HttpStatus.OK);
+    //     }
+    //     throw new NotFoundException(String.format("User with id: %d does not exist", id));
+    // }
     
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserCreateDTO data) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody RegisterDTO data) {
         User newUser = this.userService.createUser(data);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }

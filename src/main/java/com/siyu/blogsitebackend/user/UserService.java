@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.siyu.blogsitebackend.auth.RegisterDTO;
 
 import jakarta.transaction.Transactional;
 
@@ -26,7 +27,7 @@ public class UserService {
         return foundUser;
     }
     
-    public User createUser(UserCreateDTO data) {
+    public User createUser(RegisterDTO data) {
         String username = data.getUsername();
         String password = data.getPassword();
         User newUser = new User(username,password);
