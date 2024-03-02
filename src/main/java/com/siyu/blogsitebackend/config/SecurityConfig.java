@@ -25,10 +25,11 @@ public class SecurityConfig {
             // if there is a request to  "/auth/register" the user doesn't need to be authenticated
 			http
             .csrf(CsrfConfigurer::disable)
-            // .exceptionHandling((exception) -> exception.authenticationEntryPoint(customAuthExceptionHandler))
+            .exceptionHandling((exception) -> exception.authenticationEntryPoint(customAuthExceptionHandler))
             .authorizeHttpRequests((requests) -> requests
             // .requestMatchers("/articles/**").permitAll()
             .requestMatchers("/auth/register").permitAll()
+            .requestMatchers("/auth/login").permitAll()
             // .requestMatchers("/articles/**").permitAll()
             // .requestMatchers("/auth/register").permitAll()
             .anyRequest().authenticated())
