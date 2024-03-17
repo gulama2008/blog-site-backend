@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,8 +16,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siyu.blogsitebackend.article.Article;
 import com.siyu.blogsitebackend.article.ArticleController;
+import com.siyu.blogsitebackend.article.ArticleCreateDTO;
 import com.siyu.blogsitebackend.article.ArticleService;
 import com.siyu.blogsitebackend.exceptions.NotFoundException;
 
@@ -29,7 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ArticleControllerTest {
 
     @Autowired
-	private MockMvc mockMvc;
+    private MockMvc mockMvc;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
 
 	@MockBean
     private ArticleService articleService;
@@ -66,4 +70,14 @@ public class ArticleControllerTest {
             .andExpect(result -> assertEquals("Article with id: 123 does not exist",result.getResolvedException().getMessage()));
 	}
     
+    @Test
+    void createArticle_Return201Code() throws Exception {
+        ArticleCreateDTO dto = new ArticleCreateDTO("title", "content", "2024-03-10");
+        Article article = new Article("title", "content", LocalDate.parse("2024-03-10"));
+		when(articleService.createArticle(dto)).thenReturn(article);
+        this.mockMvc.perform(
+            post("/articles").contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(article)))
+            .andExpect(status().isCreated());      
+	}
 }
