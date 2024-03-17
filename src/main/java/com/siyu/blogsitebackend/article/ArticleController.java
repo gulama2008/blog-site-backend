@@ -1,6 +1,7 @@
 package com.siyu.blogsitebackend.article;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Locale.Category;
 import java.util.Optional;
 
@@ -41,9 +42,12 @@ public class ArticleController {
     @GetMapping("/{id}")
 	public ResponseEntity<Article> getById(@PathVariable Long id) {
 		Optional<Article> found = this.articleService.getById(id);
-		if(found.isPresent()) {
-			return new ResponseEntity<Article>(found.get(), HttpStatus.OK);
-		}
+        if (found.isPresent()) {
+            return new ResponseEntity<Article>(found.get(), HttpStatus.OK);
+        }
+        //Map<String, String> errors = Map.of("error",String.format("Article with id: %d does not exist", id));
+        // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
+        // return new ResponseEntity<Article>(HttpStatus.NOT_FOUND);
 		throw new NotFoundException(String.format("Article with id: %d does not exist", id));
 	}
 

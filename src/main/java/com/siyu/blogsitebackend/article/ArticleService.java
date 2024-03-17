@@ -35,13 +35,7 @@ public class ArticleService {
     }
 
     public Optional<Article> getById(Long id) {
-        Optional<Article> foundArticle = articleRepository.findById(id);
-        if(foundArticle.isPresent()){
-            Article article = foundArticle.get();
-            // Article updatedViewsArticle=this.updateViews(article);
-            return Optional.of(article);
-        }
-		return Optional.ofNullable(null);
+        return articleRepository.findById(id);
 	}
 
     public Article createArticle(ArticleCreateDTO data) {
@@ -71,7 +65,7 @@ public class ArticleService {
     }
     
     public Optional<Article> updateById(Long id, ArticleUpdateDTO data) {
-        Optional<Article> foundArticle = this.getById(id);
+        Optional<Article> foundArticle = this.articleRepository.findById(id);
         if (foundArticle.isPresent()) {
             Article toUpdate = foundArticle.get();
             toUpdate.setTitle(data.getTitle());

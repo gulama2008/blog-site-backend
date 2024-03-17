@@ -13,4 +13,12 @@ public class ArticleUpdateDTO {
     private String title;
     @NotBlank
     private String content;
+
+    public ArticleUpdateDTO() {
+    };
+
+    public ArticleUpdateDTO(String title,String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
