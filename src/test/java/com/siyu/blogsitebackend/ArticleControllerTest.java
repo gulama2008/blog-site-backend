@@ -1,7 +1,6 @@
 package com.siyu.blogsitebackend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -60,7 +59,7 @@ public class ArticleControllerTest {
     }
     
     @Test
-    void getById_NonExistingId_ReturnOptionalOfArticle() throws Exception {
+    void getById_NonExistingId_Return404Code() throws Exception {
         Long id = 123L;
 		when(articleService.getById(id)).thenReturn(Optional.empty());
         this.mockMvc.perform(

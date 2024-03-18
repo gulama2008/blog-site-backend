@@ -1,7 +1,5 @@
 package com.siyu.blogsitebackend.article;
 
-import java.time.LocalDate;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
