@@ -1,19 +1,16 @@
 package com.siyu.blogsitebackend.article;
 
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.siyu.blogsitebackend.exceptions.NotFoundException;
 import com.siyu.blogsitebackend.tag.Tag;
-import com.siyu.blogsitebackend.tag.TagAddDTO;
 import com.siyu.blogsitebackend.tag.TagCreateDTO;
 
 import jakarta.validation.Valid;
@@ -41,9 +37,9 @@ public class ArticleController {
     @GetMapping("/{id}")
 	public ResponseEntity<Article> getById(@PathVariable Long id) {
 		Optional<Article> found = this.articleService.getById(id);
-		if(found.isPresent()) {
-			return new ResponseEntity<Article>(found.get(), HttpStatus.OK);
-		}
+        if (found.isPresent()) {
+            return new ResponseEntity<Article>(found.get(), HttpStatus.OK);
+        }
 		throw new NotFoundException(String.format("Article with id: %d does not exist", id));
 	}
 

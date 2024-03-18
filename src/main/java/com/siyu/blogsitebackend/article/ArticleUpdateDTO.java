@@ -1,7 +1,5 @@
 package com.siyu.blogsitebackend.article;
 
-import java.time.LocalDate;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,4 +11,12 @@ public class ArticleUpdateDTO {
     private String title;
     @NotBlank
     private String content;
+
+    public ArticleUpdateDTO() {
+    };
+
+    public ArticleUpdateDTO(String title,String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

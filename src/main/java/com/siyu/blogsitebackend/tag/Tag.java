@@ -1,12 +1,8 @@
 package com.siyu.blogsitebackend.tag;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.siyu.blogsitebackend.article.Article;
 
 import jakarta.persistence.CascadeType;
@@ -38,7 +34,12 @@ public class Tag {
     }
 
     public Tag(String name) {
-        this.name = name;
+      this.name = name;
+    }
+    
+    public Tag(Long id, String name) {
+      this.id = id;
+      this.name = name;
     }
 
     @Override
